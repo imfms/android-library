@@ -15,6 +15,7 @@ buildscript {
 }
 
 allprojects {
+    // todo wait add CI
     repositories {
         jcenter()
     }
