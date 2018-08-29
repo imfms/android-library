@@ -1,12 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "26.0.0"
+    compileSdkVersion 27
     defaultConfig {
         applicationId "cn.f_ms.android_library"
         minSdkVersion 15
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -20,10 +19,23 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    testCompile 'junit:junit:4.12'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
+    testImplementation 'junit:junit:4.12'
+
+    implementation project(':ui')
+
+    /**
+     * logic-library
+     * https://github.com/imfms/java-library
+     */
+    String imfmsJavaLibrary = "0.0.12"
+    implementation "com.github.imfms.java-library:logic:${imfmsJavaLibrary}"
+    implementation "com.github.imfms.java-library:check:${imfmsJavaLibrary}"
+    implementation "com.github.imfms.java-library:multivalues:${imfmsJavaLibrary}"
+    implementation "com.github.imfms.java-library:collection_util:${imfmsJavaLibrary}"
 }
