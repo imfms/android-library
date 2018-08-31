@@ -61,6 +61,46 @@ abstract class AbstractArgumentActivity<Arg> extends AbstractLifecycleActivity {
      */
     private Arg mArgument;
 
+
+    /**
+     * 获取页面参数
+     *
+     * @return 页面参数
+     */
+    protected final Arg getArgument() {
+        return mArgument;
+    }
+
+    /**
+     * 检查activity参数是否存在异常
+     *
+     * @param arg activity arg
+     * @throws Exception 当检查到参数存在异常时承载错误信息的exception
+     */
+    protected void checkArgument(@Nullable Arg arg) throws Exception {
+        isArgumentTypeRight = true;
+    }
+
+    /**
+     * onCreate with argument
+     *
+     * @param argument           页面参数
+     * @param savedInstanceState 页面销毁前保存的实例状态
+     */
+    protected void onCreate(@Nullable Arg argument, @Nullable Bundle savedInstanceState) {
+    }
+
+    /**
+     * 当activity参数存在异常时的回调方法
+     * <p>
+     * 具体回调时机为当{@link #checkArgument(Arg)}抛出ArgumentException时
+     *
+     * @param exception 异常信息
+     */
+    protected void onArgumentExistError(@NonNull Exception exception) {
+        throw new RuntimeException(this.getClass().getName() + " found argument error: " + exception.getMessage(), exception);
+    }
+
     @Override
     @SuppressWarnings("unchecked")
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,45 +126,6 @@ abstract class AbstractArgumentActivity<Arg> extends AbstractLifecycleActivity {
         if (callCheckArgument(arg)) {
             onCreate(mArgument, savedInstanceState);
         }
-    }
-
-    /**
-     * 获取页面参数
-     *
-     * @return 页面参数
-     */
-    protected final Arg getArgument() {
-        return mArgument;
-    }
-
-    /**
-     * 检查activity参数是否存在异常
-     *
-     * @param arg activity arg
-     * @throws Exception 当检查到参数存在异常时承载错误信息的exception
-     */
-    protected void checkArgument(@Nullable Arg arg) throws Exception {
-        isArgumentTypeRight = true;
-    }
-
-    /**
-     * 当activity参数存在异常时的回调方法
-     * <p>
-     * 具体回调时机为当{@link #checkArgument(Arg)}抛出ArgumentException时
-     *
-     * @param exception 异常信息
-     */
-    protected void onArgumentExistError(@NonNull Exception exception) {
-        throw new RuntimeException(this.getClass().getName() + " found argument error: " + exception.getMessage(), exception);
-    }
-
-    /**
-     * onCreate with argument
-     *
-     * @param argument           页面参数
-     * @param savedInstanceState 页面销毁前保存的实例状态
-     */
-    protected void onCreate(@Nullable Arg argument, @Nullable Bundle savedInstanceState) {
     }
 
     /**
