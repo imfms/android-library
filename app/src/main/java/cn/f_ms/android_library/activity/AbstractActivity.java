@@ -1,30 +1,61 @@
 package cn.f_ms.android_library.activity;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Serializable;
 import java.util.Random;
 
+import cn.f_ms.android.ui.ArgumentException;
 import cn.f_ms.android.ui.LifecycleEventProvider;
+import cn.f_ms.android_library.R;
 
 /**
  * @author f_ms
  * @date 18-4-25
  */
-public class AbstractActivity extends cn.f_ms.android.ui.AbstractActivity {
+public class AbstractActivity extends cn.f_ms.android.ui.AbstractActivity<AbstractActivity.Arg, AbstractActivity.Result, AbstractActivity.State> {
 
-    private LinearLayout mRootView;
+    public static class Arg implements Serializable {
+        public String arg;
+    }
+
+    public static class Result implements Serializable {
+
+        public static final int RESULT_CODE = 34;
+
+        public String[] logs;
+    }
+
+    static class State implements Serializable {
+        private String[] logs;
+    }
+
+    public static Intent newIntent(Activity activity, Arg arg) {
+        return newIntent(activity, AbstractActivity.class, arg);
+    }
+
+    public static Result getResult(Intent intent) {
+        return cn.f_ms.android.ui.AbstractActivity.getResult(intent);
+    }
+
+    public static Result getResult(Bundle bundle) {
+        return cn.f_ms.android.ui.AbstractActivity.getResult(bundle);
+    }
+
+    private LinearLayout llEventsContainer;
     private LifecycleEventProvider.LifecycleObserver lifecycleObserver;
     private LifecycleEventProvider.OnKeyDownInterceptor onKeyDown;
     private LifecycleEventProvider.OnActivityResultObserver onActivityResult;
@@ -32,34 +63,45 @@ public class AbstractActivity extends cn.f_ms.android.ui.AbstractActivity {
     private LifecycleEventProvider.OnRequestPermissionsResultObserver onRequestPermissionsResult;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void checkArgument(@Nullable Arg arg) throws ArgumentException {
+        super.checkArgument(arg);
+        if (arg == null
+                || TextUtils.isEmpty(arg.arg)) {
+            throw new ArgumentException("arg can't be empty");
+        }
+    }
 
-        mRootView = new LinearLayout(getActivity());
-        mRootView.setOrientation(LinearLayout.VERTICAL);
-        setContentView(mRootView);
+    @Override
+    protected void onCreate(@Nullable Arg argument, @Nullable State savedInstanceState, @Nullable Bundle savedInstanceStateBundle) {
+        super.onCreate(argument, savedInstanceState, savedInstanceStateBundle);
 
-        Button btnStartActivityForResult = new Button(getActivity());
-        btnStartActivityForResult.setText("StartActivityForResult");
-        mRootView.addView(btnStartActivityForResult);
+        setContentView(R.layout.ui_activity_abstract);
 
-        btnStartActivityForResult.setOnClickListener(new View.OnClickListener() {
+        llEventsContainer = findViewById(R.id.llEventsContainer);
+
+        this.<TextView>findViewById(R.id.tvArgument).setText("argument: " + argument.arg);
+
+        findViewById(R.id.btnStartActivityForResult).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivityEventProvider().getStartActivityFormResultProxy()
-                        .startActivityForResult(new Intent(getActivity(), AbstractActivity.class), new Random().nextInt(10000));
+                startActivityForResult(new Intent(getActivity(), AbstractActivity.class), new Random().nextInt(10000));
             }
         });
 
-        Button btnRequestPermission = new Button(getActivity());
-        btnRequestPermission.setText("RequestPermission");
-        mRootView.addView(btnRequestPermission);
-
-        btnRequestPermission.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btnRequestPermission).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getActivityEventProvider().getRequestPermissionsProxy()
                         .requestPermissions(new String[]{Manifest.permission.CALL_PHONE}, new Random().nextInt(10000));
+            }
+        });
+
+        findViewById(R.id.btnFinishWithResult).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Result result = new Result();
+                result.logs = getEventLogs();
+                finish(Result.RESULT_CODE, result);
             }
         });
 
@@ -148,75 +190,68 @@ public class AbstractActivity extends cn.f_ms.android.ui.AbstractActivity {
             }
         };
         getActivityEventProvider().addOnRequestPermissionsResultObserver(onRequestPermissionsResult);
+    }
 
-
-        new Thread(){
-            @Override
-            public void run() {
-                super.run();
-
-                while (true) {
-                    try {
-                        Thread.sleep(20);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+    @Override
+    protected void onArgumentExistError(@NonNull ArgumentException exception) {
+        new AlertDialog.Builder(getActivity())
+                .setTitle("argument error")
+                .setMessage(exception.getMessage())
+                .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        finish();
                     }
-                    getActivityEventProvider().addLifecyclerObserver(new LifecycleEventProvider.LifecycleObserver() {
+                })
+                .show();
+    }
 
-                        private List a = new ArrayList(10000);
+    @Nullable
+    @Override
+    protected State onSaveInstanceState() {
+        State state = new State();
 
-                        @Override
-                        public void onCreate(@Nullable Bundle savedInstanceState) {
+        String[] eventLogs = getEventLogs();
 
-                        }
+        state.logs = eventLogs;
 
-                        @Override
-                        public void onPostCreate(@Nullable Bundle savedInstanceState) {
+        return state;
+    }
 
-                        }
+    @NonNull
+    private String[] getEventLogs() {
+        if (llEventsContainer == null) {
+            return new String[0];
+        }
 
-                        @Override
-                        public void onStart() {
+        String[] eventLogs = new String[llEventsContainer.getChildCount()];
 
-                        }
+        for (int i = 0; i < llEventsContainer.getChildCount(); i++) {
+            eventLogs[i] = ((TextView)llEventsContainer.getChildAt(i)).getText().toString();
+        }
+        return eventLogs;
+    }
 
-                        @Override
-                        public void onResume() {
+    @Override
+    protected void onRestoreInstanceState(State savedInstanceState, Bundle savedInstanceStateBundle) {
+        super.onRestoreInstanceState(savedInstanceState, savedInstanceStateBundle);
 
-                        }
-
-                        @Override
-                        public void onPostResume() {
-
-                        }
-
-                        @Override
-                        public void onPause() {
-
-                        }
-
-                        @Override
-                        public void onStop() {
-
-                        }
-
-                        @Override
-                        public void onDestroy() {
-
-                        }
-                    });
-                }
-
+        if (savedInstanceState != null
+                && savedInstanceState.logs != null) {
+            for (String log : savedInstanceState.logs) {
+                addText(log);
             }
-        }.start();
-
+        }
     }
 
     private void addText(String tag, String msg) {
+        addText(tag + ": " + msg);
+    }
+
+    private void addText(String content) {
         TextView textView = new TextView(getActivity());
+        textView.setText(content);
 
-        textView.setText(tag + ": " + msg);
-
-        mRootView.addView(textView, 2);
+        llEventsContainer.addView(textView, 0);
     }
 }

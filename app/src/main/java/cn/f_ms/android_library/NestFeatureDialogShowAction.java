@@ -50,13 +50,13 @@ public class NestFeatureDialogShowAction extends Action {
 
     public static abstract class AbstractActionGenerater {
 
-        private cn.f_ms.android.ui.AbstractActivity mActivity;
+        private AbstractActivity mActivity;
 
         public AbstractActionGenerater(AbstractActivity activity) {
             mActivity = CheckNull.ifNullThrowArgException(activity, "activity can't be null");
         }
 
-        public cn.f_ms.android.ui.AbstractActivity getActivity() {
+        public AbstractActivity getActivity() {
             return mActivity;
         }
 

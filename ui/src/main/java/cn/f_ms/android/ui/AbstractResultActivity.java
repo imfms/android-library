@@ -5,13 +5,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 /**
- * 存在返回结果的activity
+ * 封装返回结果的基础activity
  * todo wait add test
  *
  * @author f_ms
  * @date 18-4-21
  */
-public abstract class AbstractResultActivity<Result> extends AbstractActivity {
+abstract class AbstractResultActivity<Arg, Result, State> extends AbstractStateActivity<Arg, State> {
 
     private static final String BUNDLE_KEY_RESULT = "bundle_key_abstract_result_activity_result";
 

@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 /**
- * 需要参数的activity的封装
+ * 封装参数的基础activity
  * todo wait add test
  * <p>
  * 提供辅助指定类型的参数的获取，校验及处理功能
@@ -15,7 +15,7 @@ import android.support.annotation.Nullable;
  * @author f_ms
  * @date 18-4-21
  */
-public abstract class AbstractArgumentActivity<Arg> extends AbstractActivity {
+abstract class AbstractArgumentActivity<Arg> extends AbstractLifecycleActivity {
 
     /**
      * Activity参数bundleKey
@@ -124,7 +124,7 @@ public abstract class AbstractArgumentActivity<Arg> extends AbstractActivity {
      * @param argument           页面参数
      * @param savedInstanceState 页面销毁前保存的实例状态
      */
-    protected void onCreate(Arg argument, @Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Arg argument, @Nullable Bundle savedInstanceState) {
     }
 
     /**

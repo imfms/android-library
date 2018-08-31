@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 /**
- * 支持保存自身状态的activity
+ * 封装保存自身状态的基础activity
  * todo wait add test
  * <p>
  * 主要应对于当activity由于系统原因被销毁后页面状态丢失的问题
@@ -12,7 +12,7 @@ import android.support.annotation.Nullable;
  * @author f_ms
  * @date 18-4-22
  */
-public abstract class AbstractStateActivity<StateType> extends AbstractActivity {
+abstract class AbstractStateActivity<Arg, State> extends AbstractArgumentActivity<Arg> {
 
     /**
      * 保存状态值的bundleKey
@@ -20,7 +20,7 @@ public abstract class AbstractStateActivity<StateType> extends AbstractActivity 
     private static String BUNDLE_KEY_SAVE_INSTANCE
             = "BUNDLE_KEY_SAVE_INSTANCE_ABSTRACT_STATE_ACTIVITY";
 
-    private StateType mInstanceState;
+    private State mInstanceState;
 
     /**
      * 获取保存实例状态值的bundleKey
@@ -31,21 +31,44 @@ public abstract class AbstractStateActivity<StateType> extends AbstractActivity 
         return BUNDLE_KEY_SAVE_INSTANCE;
     }
 
+    /**
+     * 重载onCreate, 替换实例状态参数为状态类型
+     *
+     * @param savedInstanceState      实例状态
+     * @param savedInstanceStateBundle 实例状态原始数据
+     */
+    protected void onCreate(@Nullable Arg argument, @Nullable State savedInstanceState, @Nullable Bundle savedInstanceStateBundle) {}
+
+    /**
+     * 当需要保存实例状态时
+     *
+     * @return 实例状态
+     */
+    @Nullable
+    protected State onSaveInstanceState() {
+        return null;
+    }
+
+    /**
+     * 当恢复实例状态时
+     * 详情参见{@link #onRestoreInstanceState(Bundle)}
+     *
+     * @param savedInstanceState 恢复的实例状态
+     */
+    protected void onRestoreInstanceState(State savedInstanceState, Bundle savedInstanceStateBundle) {}
+
     @Override
     @SuppressWarnings("unchecked")
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreate(@Nullable Arg argument, @Nullable Bundle savedInstanceState) {
+        super.onCreate(argument, savedInstanceState);
 
-        StateType intanceState = null;
+        State intanceState = null;
         if (savedInstanceState != null) {
-            intanceState = (StateType) savedInstanceState.get(getSaveInstanceStateBundleKey());
-        }
-        if (intanceState == null) {
-            intanceState = getInitInstanceState();
+            intanceState = (State) savedInstanceState.get(getSaveInstanceStateBundleKey());
         }
 
         mInstanceState = intanceState;
-        onCreate(mInstanceState, savedInstanceState);
+        onCreate(argument, mInstanceState, savedInstanceState);
     }
 
     /**
@@ -53,7 +76,7 @@ public abstract class AbstractStateActivity<StateType> extends AbstractActivity 
      *
      * @return 实例状态
      */
-    protected StateType getInstanceState() {
+    protected State getInstanceState() {
         return mInstanceState;
     }
 
@@ -68,40 +91,4 @@ public abstract class AbstractStateActivity<StateType> extends AbstractActivity 
         super.onRestoreInstanceState(savedInstanceState);
         onRestoreInstanceState(getInstanceState(), savedInstanceState);
     }
-
-    /**
-     * 重载onCreate, 替换实例状态参数为状态类型
-     *
-     * @param instanceState      实例状态
-     * @param savedInstanceState 实例状态原始数据
-     */
-    protected void onCreate(@Nullable StateType instanceState, @Nullable Bundle savedInstanceState) {}
-
-    /**
-     * 获取初始化实例状态
-     *
-     * @return 初始实例状态
-     */
-    @Nullable
-    protected StateType getInitInstanceState() {
-        return null;
-    }
-
-    /**
-     * 当需要保存实例状态时
-     *
-     * @return 实例状态
-     */
-    @Nullable
-    protected StateType onSaveInstanceState() {
-        return null;
-    }
-
-    /**
-     * 当恢复实例状态时
-     * 详情参见{@link #onRestoreInstanceState(Bundle)}
-     *
-     * @param instanceState 恢复的实例状态
-     */
-    protected void onRestoreInstanceState(StateType instanceState, Bundle savedInstanceState) {}
 }

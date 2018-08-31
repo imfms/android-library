@@ -4,15 +4,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import cn.f_ms.android.ui.AbstractActivity;
-import cn.f_ms.android.ui.AbstractArgumentActivity;
-import cn.f_ms.android.ui.AbstractResultActivity;
-import cn.f_ms.android.ui.AbstractStateActivity;
 import cn.f_ms.android.ui.LifecycleEventProvider;
 import cn.f_ms.android_library.Action;
 import cn.f_ms.android_library.NestFeatureDialogShowAction;
+import cn.f_ms.library.logic.Callback;
 
 /**
  * Desc: activity library demo generater
@@ -22,7 +18,7 @@ import cn.f_ms.android_library.NestFeatureDialogShowAction;
  */
 public class ActionGenerater extends NestFeatureDialogShowAction.AbstractActionGenerater {
 
-    public ActionGenerater(AbstractActivity activity) {
+    public ActionGenerater(cn.f_ms.android.ui.AbstractActivity activity) {
         super(activity);
     }
 
@@ -30,74 +26,82 @@ public class ActionGenerater extends NestFeatureDialogShowAction.AbstractActionG
     public Action[] generate() {
         return new Action[]{
 
-                new Action(AbstractActivity.class.getSimpleName()) {
-                    @Override
-                    public void run() {
-                        getActivity().startActivity(
-                                new Intent(getActivity(), cn.f_ms.android_library.activity.AbstractActivity.class)
-                        );
-                    }
-                },
-                new Action(AbstractArgumentActivity.class.getSimpleName()) {
+                new Action(cn.f_ms.android.ui.AbstractActivity.class.getSimpleName()) {
                     @Override
                     public void run() {
 
-                        final EditText editText = new EditText(getActivity());
-                        editText.setHint("activity display contenet");
+                        final int startActivityRequestCode = 2;
 
-                        new AlertDialog.Builder(getActivity())
-                                .setTitle(getName())
-                                .setView(editText)
-                                .setNegativeButton("cancel", null)
-                                .setPositiveButton("submit", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        String displayContent = editText.getText().toString();
-                                        callArgumentActivity(displayContent);
-                                    }
-                                })
-                                .show();
-                    }
+                        final LifecycleEventProvider.OnActivityResultObserver[] onActivityResultObservers = new LifecycleEventProvider.OnActivityResultObserver[1];
 
-                    private void callArgumentActivity(String displayContent) {
-                        ArgumentActivity.Arg arg = new ArgumentActivity.Arg();
-                        arg.displayContent = displayContent;
-                        getActivity().startActivity(
-                                ArgumentActivity.newIntent(getActivity(), arg)
-                        );
-                    }
-                },
+                        final LifecycleEventProvider.OnActivityResultObserver onActivityResultObserver
+                                = new LifecycleEventProvider.OnActivityResultObserver() {
 
-                new Action(AbstractResultActivity.class.getSimpleName()) {
-
-                    static final int REQUEST_CODE = 1234;
-
-                    @Override
-                    public void run() {
-                        getActivity().getActivityEventProvider().addOnActivityResultObserver(new LifecycleEventProvider.OnActivityResultObserver() {
                             @Override
                             public void onActivityResult(int requestCode, int resultCode, Intent data) {
-                                if (requestCode == REQUEST_CODE
-                                        && ResultActivity.Result.RESULT_CODE == resultCode) {
-                                    ResultActivity.Result result = ResultActivity.getResult(data);
-                                    Toast.makeText(getActivity(), String.valueOf(result.getSelectPosition()), Toast.LENGTH_LONG).show();
+
+                                getActivity().getActivityEventProvider().removeOnActivityResultObserver(onActivityResultObservers[0]);
+
+                                if (startActivityRequestCode == requestCode
+                                        && resultCode == AbstractActivity.Result.RESULT_CODE) {
+
+                                    AbstractActivity.Result result = AbstractActivity.getResult(data);
+
+                                    if (result == null
+                                            || result.logs == null) {
+                                        return;
+                                    }
+
+                                    String[] logs = result.logs;
+                                    StringBuilder sb = new StringBuilder();
+                                    for (String log : logs) {
+                                        sb.append(log).append('\n');
+                                    }
+
+                                    new AlertDialog.Builder(getActivity())
+                                            .setTitle("result content")
+                                            .setMessage(sb)
+                                            .show();
                                 }
                             }
-                        });
-                        getActivity().startActivityForResult(
-                                new Intent(getActivity(), ResultActivity.class), REQUEST_CODE
-                        );
-                    }
-                },
+                        };
 
-                new Action(AbstractStateActivity.class.getSimpleName()) {
-                    @Override
-                    public void run() {
-                        getActivity().startActivity(
-                                new Intent(getActivity(), StateActivity.class)
-                        );
+                        onActivityResultObservers[0] = onActivityResultObserver;
+
+                        getActivity().getActivityEventProvider().addOnActivityResultObserver(onActivityResultObserver);
+
+                        showInputDialog("input argument", "please input argument for new activity", new Callback<String>() {
+                            @Override
+                            public void onCallback(String s) {
+                                AbstractActivity.Arg arg = new AbstractActivity.Arg();
+                                arg.arg = s;
+                                getActivity().startActivityForResult(
+                                        AbstractActivity.newIntent(getActivity(), arg), startActivityRequestCode
+                                );
+                            }
+                        });
                     }
                 }
         };
     }
+
+    private void showInputDialog(String title, String hint, final Callback<String> callback) {
+        final EditText editText = new EditText(getActivity());
+        editText.setHint(hint);
+
+        new AlertDialog.Builder(getActivity())
+                .setTitle(title)
+                .setView(editText)
+                .setNegativeButton("cancel", null)
+                .setPositiveButton("submit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        callback.onCallback(
+                                editText.getText().toString()
+                        );
+                    }
+                })
+                .show();
+    }
+
 }
