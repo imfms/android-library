@@ -9,6 +9,7 @@ import android.widget.TextView;
 import java.io.Serializable;
 
 import cn.f_ms.android.ui.AbstractArgumentActivity;
+import cn.f_ms.android.ui.ArgumentException;
 
 /**
  * @author f_ms

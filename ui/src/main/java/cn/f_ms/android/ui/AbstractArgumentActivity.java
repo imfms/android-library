@@ -128,46 +128,6 @@ public abstract class AbstractArgumentActivity<Arg> extends AbstractActivity {
     }
 
     /**
-     * 参数错误信息 包装异常
-     */
-    public static class ArgumentException extends RuntimeException {
-        public ArgumentException() {
-        }
-
-        public ArgumentException(String s) {
-            super(s);
-        }
-
-        public ArgumentException(String message, Throwable cause) {
-            super(message, cause);
-        }
-
-        public ArgumentException(Throwable cause) {
-            super(cause);
-        }
-
-        /**
-         * 参数格式错误 包装异常
-         */
-        public static class ArgumentTypeErrorException extends ArgumentException {
-            public ArgumentTypeErrorException() {
-            }
-
-            public ArgumentTypeErrorException(String s) {
-                super(s);
-            }
-
-            public ArgumentTypeErrorException(String message, Throwable cause) {
-                super(message, cause);
-            }
-
-            public ArgumentTypeErrorException(Throwable cause) {
-                super(cause);
-            }
-        }
-    }
-
-    /**
      * 用于检查外部传入参数是否与子类声明真实参数类型匹配
      */
     private boolean isArgumentTypeRight = false;
