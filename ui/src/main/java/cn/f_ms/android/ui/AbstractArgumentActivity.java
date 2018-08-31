@@ -101,9 +101,9 @@ abstract class AbstractArgumentActivity<Arg> extends AbstractLifecycleActivity {
      * 检查activity参数是否存在异常
      *
      * @param arg activity arg
-     * @throws ArgumentException 当检查到参数存在异常时承载错误信息的exception
+     * @throws Exception 当检查到参数存在异常时承载错误信息的exception
      */
-    protected void checkArgument(@Nullable Arg arg) throws ArgumentException {
+    protected void checkArgument(@Nullable Arg arg) throws Exception {
         isArgumentTypeRight = true;
     }
 
@@ -114,8 +114,8 @@ abstract class AbstractArgumentActivity<Arg> extends AbstractLifecycleActivity {
      *
      * @param exception 异常信息
      */
-    protected void onArgumentExistError(@NonNull ArgumentException exception) {
-        throw exception;
+    protected void onArgumentExistError(@NonNull Exception exception) {
+        throw new RuntimeException(this.getClass().getName() + " found argument error: " + exception.getMessage(), exception);
     }
 
     /**
@@ -144,7 +144,7 @@ abstract class AbstractArgumentActivity<Arg> extends AbstractLifecycleActivity {
                 onArgumentExistError(new ArgumentException.ArgumentTypeErrorException("argument type cast error on '" + this.getClass().getName() + "': " + e.getMessage(), e));
             }
             return false;
-        } catch (ArgumentException e) {
+        } catch (Exception e) {
             onArgumentExistError(e);
             return false;
         }

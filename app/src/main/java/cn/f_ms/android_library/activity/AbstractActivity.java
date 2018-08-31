@@ -63,7 +63,7 @@ public class AbstractActivity extends cn.f_ms.android.ui.AbstractActivity<Abstra
     private LifecycleEventProvider.OnRequestPermissionsResultObserver onRequestPermissionsResult;
 
     @Override
-    protected void checkArgument(@Nullable Arg arg) throws ArgumentException {
+    protected void checkArgument(@Nullable Arg arg) throws Exception {
         super.checkArgument(arg);
         if (arg == null
                 || TextUtils.isEmpty(arg.arg)) {
@@ -193,7 +193,7 @@ public class AbstractActivity extends cn.f_ms.android.ui.AbstractActivity<Abstra
     }
 
     @Override
-    protected void onArgumentExistError(@NonNull ArgumentException exception) {
+    protected void onArgumentExistError(@NonNull Exception exception) {
         new AlertDialog.Builder(getActivity())
                 .setTitle("argument error")
                 .setMessage(exception.getMessage())
