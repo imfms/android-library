@@ -108,15 +108,11 @@ abstract class AbstractArgumentActivity<Arg> extends AbstractLifecycleActivity {
 
         Bundle extras = getIntent().getExtras();
 
-        // no argument
-        if (extras == null) {
-            callCheckArgument(null);
-            return;
-        }
-
-        Arg arg;
+        Arg arg = null;
         try {
-            arg = (Arg) extras.get(getArgumentBundleKey());
+            if (extras != null) {
+                arg = (Arg) extras.get(getArgumentBundleKey());
+            }
         } catch (ClassCastException e) {
             onArgumentExistError(new ArgumentException.ArgumentTypeErrorException("argument type cast error on '" + this.getClass().getName() + "': " + e.getMessage(), e));
             return;
