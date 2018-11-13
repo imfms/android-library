@@ -18,6 +18,8 @@ allprojects {
     // todo wait add CI
     repositories {
         jcenter()
+        google()
+        maven { url "https://jitpack.io" }
     }
 }
 
