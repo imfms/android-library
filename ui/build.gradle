@@ -40,4 +40,10 @@ dependencies {
 
     testImplementation "org.robolectric:robolectric:3.8"
     testImplementation "org.mockito:mockito-core:2.18.3"
+
+    /**
+     * logic-library
+     * https://github.com/imfms/java-library
+     */
+    implementation "com.github.imfms.java-library:logic:0.0.14"
 }

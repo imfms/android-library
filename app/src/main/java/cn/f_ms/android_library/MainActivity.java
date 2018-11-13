@@ -8,6 +8,7 @@ import android.widget.ListView;
 
 import cn.f_ms.android.ui.activity.AbstractActivity;
 import cn.f_ms.android_library.activity.ActionGenerater;
+import cn.f_ms.android_library.fragment.DemoAbstractFragmentActivity;
 import cn.f_ms.library.collection.util.ElementFilter;
 
 public class MainActivity extends AbstractActivity {
@@ -43,6 +44,21 @@ public class MainActivity extends AbstractActivity {
     private Action[] getInitActions() {
         return new Action[]{
                 new NestFeatureDialogShowAction(getActivity(),"activity", new ActionGenerater(this)),
+                new NestFeatureDialogShowAction(getActivity(), "fragment", new NestFeatureDialogShowAction.AbstractActionGenerater(this) {
+                    @Override
+                    public Action[] generate() {
+                        return new Action[]{
+                                new Action("DemoAbstractFragment") {
+                                    @Override
+                                    public void run() {
+                                        getActivity().startActivity(
+                                                DemoAbstractFragmentActivity.newIntent(getActivity(), DemoAbstractFragmentActivity.class, null)
+                                        );
+                                    }
+                                }
+                        };
+                    }
+                })
         };
     }
 
