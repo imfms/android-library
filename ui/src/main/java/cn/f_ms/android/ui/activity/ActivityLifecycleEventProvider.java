@@ -200,6 +200,51 @@ public interface ActivityLifecycleEventProvider {
     }
 
     /**
+     * SimpleLifecycleObserver
+     */
+    abstract class SimpleLifecycleObserver implements LifecycleObserver {
+        @Override
+        public void onCreate(@Nullable Bundle savedInstanceState) {
+
+        }
+
+        @Override
+        public void onPostCreate(@Nullable Bundle savedInstanceState) {
+
+        }
+
+        @Override
+        public void onStart() {
+
+        }
+
+        @Override
+        public void onResume() {
+
+        }
+
+        @Override
+        public void onPostResume() {
+
+        }
+
+        @Override
+        public void onPause() {
+
+        }
+
+        @Override
+        public void onStop() {
+
+        }
+
+        @Override
+        public void onDestroy() {
+
+        }
+    }
+
+    /**
      * get activity's lifecycle's current state provider
      * @return activity's lifecycle's current state provider
      */
