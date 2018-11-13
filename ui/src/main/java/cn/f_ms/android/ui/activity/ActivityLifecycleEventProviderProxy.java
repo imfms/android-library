@@ -11,6 +11,8 @@ import android.view.KeyEvent;
 import java.util.Iterator;
 import java.util.Set;
 
+import cn.f_ms.library.logic.Callback;
+
 /**
  * ActivityLifecycleEventProvider proxy implememnt
  *
@@ -172,43 +174,32 @@ public class ActivityLifecycleEventProviderProxy implements ActivityLifecycleEve
     /**
      * onCreate proxy, please call me when event happend
      */
-    public final void onCreate(@Nullable Bundle savedInstanceState) {
+    public final void onCreate(@Nullable final Bundle savedInstanceState) {
+
+        if (mLifecycleObservers != null) {
+            lifecycleObserverDo(new Callback<LifecycleObserver>() {
+                @Override
+                public void onCallback(LifecycleObserver lifecycleObserver) {
+                    lifecycleObserver.onCreate(savedInstanceState);
+                }
+            });
+        }
 
         mActivityCurrentLifecycleState = LifecycleCurrentStateProvider.State.CREATED;
-
-        if (mLifecycleObservers == null) {
-            return;
-        }
-
-        Iterator<LifecycleObserver> iterator = mLifecycleObservers.iterator();
-        while (iterator.hasNext()) {
-            LifecycleObserver observer = iterator.next();
-            if (observer == null) {
-                iterator.remove();
-                continue;
-            }
-
-            observer.onCreate(savedInstanceState);
-        }
     }
 
     /**
      * onPostCreate proxy, please call me when event happend
      */
-    public final void onPostCreate(@Nullable Bundle savedInstanceState) {
-        if (mLifecycleObservers == null) {
+    public final void onPostCreate(@Nullable final Bundle savedInstanceState) {
+        if (mLifecycleObservers != null) {
+            lifecycleObserverDo(new Callback<LifecycleObserver>() {
+                @Override
+                public void onCallback(LifecycleObserver lifecycleObserver) {
+                    lifecycleObserver.onPostCreate(savedInstanceState);
+                }
+            });
             return;
-        }
-
-        Iterator<LifecycleObserver> iterator = mLifecycleObservers.iterator();
-        while (iterator.hasNext()) {
-            LifecycleObserver observer = iterator.next();
-            if (observer == null) {
-                iterator.remove();
-                continue;
-            }
-
-            observer.onPostCreate(savedInstanceState);
         }
     }
 
@@ -216,65 +207,43 @@ public class ActivityLifecycleEventProviderProxy implements ActivityLifecycleEve
      * onStart proxy, please call me when event happend
      */
     public final void onStart() {
-
+        if (mLifecycleObservers != null) {
+            lifecycleObserverDo(new Callback<LifecycleObserver>() {
+                @Override
+                public void onCallback(LifecycleObserver lifecycleObserver) {
+                    lifecycleObserver.onStart();
+                }
+            });
+        }
         mActivityCurrentLifecycleState = LifecycleCurrentStateProvider.State.STARTED;
-
-        if (mLifecycleObservers == null) {
-            return;
-        }
-
-        Iterator<LifecycleObserver> iterator = mLifecycleObservers.iterator();
-        while (iterator.hasNext()) {
-            LifecycleObserver observer = iterator.next();
-            if (observer == null) {
-                iterator.remove();
-                continue;
-            }
-
-            observer.onStart();
-        }
     }
 
     /**
      * onResume proxy, please call me when event happend
      */
     public final void onResume() {
-
+        if (mLifecycleObservers != null) {
+            lifecycleObserverDo(new Callback<LifecycleObserver>() {
+                @Override
+                public void onCallback(LifecycleObserver lifecycleObserver) {
+                    lifecycleObserver.onResume();
+                }
+            });
+        }
         mActivityCurrentLifecycleState = LifecycleCurrentStateProvider.State.RESUMED;
-
-        if (mLifecycleObservers == null) {
-            return;
-        }
-
-        Iterator<LifecycleObserver> iterator = mLifecycleObservers.iterator();
-        while (iterator.hasNext()) {
-            LifecycleObserver observer = iterator.next();
-            if (observer == null) {
-                iterator.remove();
-                continue;
-            }
-
-            observer.onResume();
-        }
     }
 
     /**
      * onPostResume proxy, please call me when event happend
      */
     public final void onPostResume() {
-        if (mLifecycleObservers == null) {
-            return;
-        }
-
-        Iterator<LifecycleObserver> iterator = mLifecycleObservers.iterator();
-        while (iterator.hasNext()) {
-            LifecycleObserver observer = iterator.next();
-            if (observer == null) {
-                iterator.remove();
-                continue;
-            }
-
-            observer.onPostResume();
+        if (mLifecycleObservers != null) {
+            lifecycleObserverDo(new Callback<LifecycleObserver>() {
+                @Override
+                public void onCallback(LifecycleObserver lifecycleObserver) {
+                    lifecycleObserver.onPostResume();
+                }
+            });
         }
     }
 
@@ -282,69 +251,45 @@ public class ActivityLifecycleEventProviderProxy implements ActivityLifecycleEve
      * onPause proxy, please call me when event happend
      */
     public final void onPause() {
-
+        if (mLifecycleObservers != null) {
+            lifecycleObserverDo(new Callback<LifecycleObserver>() {
+                @Override
+                public void onCallback(LifecycleObserver lifecycleObserver) {
+                    lifecycleObserver.onPause();
+                }
+            });
+        }
         mActivityCurrentLifecycleState = LifecycleCurrentStateProvider.State.PAUSED;
-
-        if (mLifecycleObservers == null) {
-            return;
-        }
-
-        Iterator<LifecycleObserver> iterator = mLifecycleObservers.iterator();
-        while (iterator.hasNext()) {
-            LifecycleObserver observer = iterator.next();
-            if (observer == null) {
-                iterator.remove();
-                continue;
-            }
-
-            observer.onPause();
-        }
     }
 
     /**
      * onStop proxy, please call me when event happend
      */
     public final void onStop() {
-
+        if (mLifecycleObservers != null) {
+            lifecycleObserverDo(new Callback<LifecycleObserver>() {
+                @Override
+                public void onCallback(LifecycleObserver lifecycleObserver) {
+                    lifecycleObserver.onStop();
+                }
+            });
+        }
         mActivityCurrentLifecycleState = LifecycleCurrentStateProvider.State.STOPED;
-
-        if (mLifecycleObservers == null) {
-            return;
-        }
-
-        Iterator<LifecycleObserver> iterator = mLifecycleObservers.iterator();
-        while (iterator.hasNext()) {
-            LifecycleObserver observer = iterator.next();
-            if (observer == null) {
-                iterator.remove();
-                continue;
-            }
-
-            observer.onStop();
-        }
     }
 
     /**
      * onDestroy proxy, please call me when event happend
      */
     public final void onDestroy() {
-
+        if (mLifecycleObservers != null) {
+            lifecycleObserverDo(new Callback<LifecycleObserver>() {
+                @Override
+                public void onCallback(LifecycleObserver lifecycleObserver) {
+                    lifecycleObserver.onDestroy();
+                }
+            });
+        }
         mActivityCurrentLifecycleState = LifecycleCurrentStateProvider.State.DESTORYED;
-
-        if (mLifecycleObservers == null) {
-            return;
-        }
-
-        Iterator<LifecycleObserver> iterator = mLifecycleObservers.iterator();
-        while (iterator.hasNext()) {
-            LifecycleObserver observer = iterator.next();
-            if (observer == null) {
-                iterator.remove();
-                continue;
-            }
-
-            observer.onDestroy();
-        }
     }
 
     /**
@@ -377,62 +322,47 @@ public class ActivityLifecycleEventProviderProxy implements ActivityLifecycleEve
     /**
      * onRequestPermissionsResult proxy, please call me when event happend
      */
-    public final void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public final void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
         if (mOnRequestPermissionsResultObservers == null) {
             return;
         }
-
-        Iterator<OnRequestPermissionsResultObserver> iterator = mOnRequestPermissionsResultObservers.iterator();
-        while (iterator.hasNext()) {
-            OnRequestPermissionsResultObserver observer = iterator.next();
-            if (observer == null) {
-                iterator.remove();
-                continue;
+        observersDo(mOnRequestPermissionsResultObservers, new Callback<OnRequestPermissionsResultObserver>() {
+            @Override
+            public void onCallback(OnRequestPermissionsResultObserver onRequestPermissionsResultObserver) {
+                onRequestPermissionsResultObserver.onRequestPermissionsResult(requestCode, permissions, grantResults);
             }
-
-            observer.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
+        });
     }
 
     /**
      * onActivityResult proxy, please call me when event happend
      */
-    public final void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public final void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         if (mOnActivityResultObservers == null) {
             return;
         }
-
-        Iterator<OnActivityResultObserver> iterator = mOnActivityResultObservers.iterator();
-        while (iterator.hasNext()) {
-            OnActivityResultObserver observer = iterator.next();
-            if (observer == null) {
-                iterator.remove();
-                continue;
+        observersDo(mOnActivityResultObservers, new Callback<OnActivityResultObserver>() {
+            @Override
+            public void onCallback(OnActivityResultObserver onActivityResultObserver) {
+                onActivityResultObserver.onActivityResult(requestCode, resultCode, data);
             }
-
-            observer.onActivityResult(requestCode, resultCode, data);
-        }
+        });
     }
 
 
     /**
      * onConfigurationChanged proxy, please call me when event happend
      */
-    public final void onConfigurationChanged(Configuration newConfig) {
+    public final void onConfigurationChanged(final Configuration newConfig) {
         if (mOnConfigurationChangedObservers == null) {
             return;
         }
-
-        Iterator<OnConfigurationChangedObserver> iterator = mOnConfigurationChangedObservers.iterator();
-        while (iterator.hasNext()) {
-            OnConfigurationChangedObserver observer = iterator.next();
-            if (observer == null) {
-                iterator.remove();
-                continue;
+        observersDo(mOnConfigurationChangedObservers, new Callback<OnConfigurationChangedObserver>() {
+            @Override
+            public void onCallback(OnConfigurationChangedObserver onConfigurationChangedObserver) {
+                onConfigurationChangedObserver.onConfigurationChanged(newConfig);
             }
-
-            observer.onConfigurationChanged(newConfig);
-        }
+        });
     }
 
     private <T> void removeObserver(Set<T> list, T observer) {
@@ -453,6 +383,26 @@ public class ActivityLifecycleEventProviderProxy implements ActivityLifecycleEve
                 iterator.remove();
                 break;
             }
+        }
+    }
+
+    private void lifecycleObserverDo(Callback<LifecycleObserver> callback) {
+        observersDo(mLifecycleObservers, callback);
+    }
+
+    private <Observer> void observersDo(Iterable<Observer> observerIterable, Callback<Observer> callback) {
+
+        Iterator<Observer> iterator = observerIterable.iterator();
+
+        while (iterator.hasNext()) {
+
+            Observer observer = iterator.next();
+            if (observer == null) {
+                iterator.remove();
+                continue;
+            }
+
+            callback.onCallback(observer);
         }
     }
 }

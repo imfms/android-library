@@ -80,8 +80,9 @@ abstract class AbstractArgumentActivity<Arg> extends AbstractLifecycleActivity {
      * @param arg activity arg
      * @throws Exception 当检查到参数存在异常时承载错误信息的exception
      */
-    protected void checkArgument(@Nullable Arg arg) throws Exception {
+    protected Arg checkArgument(@Nullable Arg arg) throws Exception {
         isArgumentTypeRight = true;
+        return arg;
     }
 
     /**
@@ -121,9 +122,18 @@ abstract class AbstractArgumentActivity<Arg> extends AbstractLifecycleActivity {
             return;
         }
 
-        mArgument = arg;
-        if (callCheckArgument(arg)) {
+        try {
+            mArgument = checkArgument(arg);
+            if (!isArgumentTypeRight) {
+                throw new IllegalStateException("please call super.checkArgument(Arg) in '" + this.getClass().getName() + "' first");
+            }
             onCreate(mArgument, savedInstanceState);
+        } catch (ClassCastException e) {
+            if (!isArgumentTypeRight) {
+                onArgumentExistError(new ArgumentException.ArgumentTypeErrorException("argument type cast error on '" + this.getClass().getName() + "': " + e.getMessage(), e));
+            }
+        } catch (Exception e) {
+            onArgumentExistError(e);
         }
     }
 
@@ -131,22 +141,4 @@ abstract class AbstractArgumentActivity<Arg> extends AbstractLifecycleActivity {
      * 用于检查外部传入参数是否与子类声明真实参数类型匹配
      */
     private boolean isArgumentTypeRight = false;
-
-    private boolean callCheckArgument(@Nullable Arg argument) {
-        try {
-            checkArgument(argument);
-            if (!isArgumentTypeRight) {
-                throw new IllegalStateException("please call super.checkArgument(Arg) in '" + this.getClass().getName() + "' first");
-            }
-            return true;
-        } catch (ClassCastException e) {
-            if (!isArgumentTypeRight) {
-                onArgumentExistError(new ArgumentException.ArgumentTypeErrorException("argument type cast error on '" + this.getClass().getName() + "': " + e.getMessage(), e));
-            }
-            return false;
-        } catch (Exception e) {
-            onArgumentExistError(e);
-            return false;
-        }
-    }
 }

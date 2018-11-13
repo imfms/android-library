@@ -63,12 +63,13 @@ public class AbstractActivity extends cn.f_ms.android.ui.activity.AbstractActivi
     private ActivityLifecycleEventProvider.OnRequestPermissionsResultObserver onRequestPermissionsResult;
 
     @Override
-    protected void checkArgument(@Nullable Arg arg) throws Exception {
+    protected Arg checkArgument(@Nullable Arg arg) throws Exception {
         super.checkArgument(arg);
         if (arg == null
                 || TextUtils.isEmpty(arg.arg)) {
             throw new ArgumentException("arg can't be empty");
         }
+        return arg;
     }
 
     @Override
