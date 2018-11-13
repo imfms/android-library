@@ -80,7 +80,7 @@ abstract class AbstractArgumentFragment<Arg> extends AbstractLifecycleFragment {
      *
      * @return 页面参数
      */
-    protected final Arg getArgument() {
+    public final Arg getArgument() {
         return mArgument;
     }
 
