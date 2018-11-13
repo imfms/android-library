@@ -1,10 +1,13 @@
-package cn.f_ms.android.ui;
+package cn.f_ms.android.ui.activity;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
+import cn.f_ms.android.ui.exception.ArgumentException;
+import cn.f_ms.android.ui.util.BundleExtraPutUtil;
 
 /**
  * 封装参数的基础activity

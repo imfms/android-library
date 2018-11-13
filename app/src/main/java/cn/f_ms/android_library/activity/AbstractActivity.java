@@ -18,15 +18,15 @@ import android.widget.TextView;
 import java.io.Serializable;
 import java.util.Random;
 
-import cn.f_ms.android.ui.ArgumentException;
-import cn.f_ms.android.ui.LifecycleEventProvider;
+import cn.f_ms.android.ui.exception.ArgumentException;
+import cn.f_ms.android.ui.activity.ActivityLifecycleEventProvider;
 import cn.f_ms.android_library.R;
 
 /**
  * @author f_ms
  * @date 18-4-25
  */
-public class AbstractActivity extends cn.f_ms.android.ui.AbstractActivity<AbstractActivity.Arg, AbstractActivity.Result, AbstractActivity.State> {
+public class AbstractActivity extends cn.f_ms.android.ui.activity.AbstractActivity<AbstractActivity.Arg, AbstractActivity.Result, AbstractActivity.State> {
 
     public static class Arg implements Serializable {
         public String arg;
@@ -48,19 +48,19 @@ public class AbstractActivity extends cn.f_ms.android.ui.AbstractActivity<Abstra
     }
 
     public static Result getResult(Intent intent) {
-        return cn.f_ms.android.ui.AbstractActivity.getResult(intent);
+        return cn.f_ms.android.ui.activity.AbstractActivity.getResult(intent);
     }
 
     public static Result getResult(Bundle bundle) {
-        return cn.f_ms.android.ui.AbstractActivity.getResult(bundle);
+        return cn.f_ms.android.ui.activity.AbstractActivity.getResult(bundle);
     }
 
     private LinearLayout llEventsContainer;
-    private LifecycleEventProvider.LifecycleObserver lifecycleObserver;
-    private LifecycleEventProvider.OnKeyDownInterceptor onKeyDown;
-    private LifecycleEventProvider.OnActivityResultObserver onActivityResult;
-    private LifecycleEventProvider.OnConfigurationChangedObserver onConfigurationChanged;
-    private LifecycleEventProvider.OnRequestPermissionsResultObserver onRequestPermissionsResult;
+    private ActivityLifecycleEventProvider.LifecycleObserver lifecycleObserver;
+    private ActivityLifecycleEventProvider.OnKeyDownInterceptor onKeyDown;
+    private ActivityLifecycleEventProvider.OnActivityResultObserver onActivityResult;
+    private ActivityLifecycleEventProvider.OnConfigurationChangedObserver onConfigurationChanged;
+    private ActivityLifecycleEventProvider.OnRequestPermissionsResultObserver onRequestPermissionsResult;
 
     @Override
     protected void checkArgument(@Nullable Arg arg) throws Exception {
@@ -105,7 +105,7 @@ public class AbstractActivity extends cn.f_ms.android.ui.AbstractActivity<Abstra
             }
         });
 
-        lifecycleObserver = new LifecycleEventProvider.LifecycleObserver() {
+        lifecycleObserver = new ActivityLifecycleEventProvider.LifecycleObserver() {
             @Override
             public void onCreate(@Nullable Bundle savedInstanceState) {
                 addText("lifecycle", "onCreate");
@@ -154,7 +154,7 @@ public class AbstractActivity extends cn.f_ms.android.ui.AbstractActivity<Abstra
         };
         getActivityEventProvider().addLifecyclerObserver(lifecycleObserver);
 
-        onKeyDown = new LifecycleEventProvider.OnKeyDownInterceptor() {
+        onKeyDown = new ActivityLifecycleEventProvider.OnKeyDownInterceptor() {
             @Override
             public boolean onKeyDown(int keyCode, KeyEvent event) {
                 addText("onKeyDown", event.toString());
@@ -163,7 +163,7 @@ public class AbstractActivity extends cn.f_ms.android.ui.AbstractActivity<Abstra
         };
         getActivityEventProvider().addOnKeyDownInterceptor(onKeyDown);
 
-        onActivityResult = new LifecycleEventProvider.OnActivityResultObserver() {
+        onActivityResult = new ActivityLifecycleEventProvider.OnActivityResultObserver() {
             @Override
             public void onActivityResult(int requestCode, int resultCode, Intent data) {
                 addText("onActivityResult", String.format(
@@ -173,7 +173,7 @@ public class AbstractActivity extends cn.f_ms.android.ui.AbstractActivity<Abstra
         };
         getActivityEventProvider().addOnActivityResultObserver(onActivityResult);
 
-        onConfigurationChanged = new LifecycleEventProvider.OnConfigurationChangedObserver() {
+        onConfigurationChanged = new ActivityLifecycleEventProvider.OnConfigurationChangedObserver() {
             @Override
             public void onConfigurationChanged(Configuration newConfig) {
                 addText("onConfigurationChanged", newConfig.toString());
@@ -181,7 +181,7 @@ public class AbstractActivity extends cn.f_ms.android.ui.AbstractActivity<Abstra
         };
         getActivityEventProvider().addOnConfigurationChangedObserver(onConfigurationChanged);
 
-        onRequestPermissionsResult = new LifecycleEventProvider.OnRequestPermissionsResultObserver() {
+        onRequestPermissionsResult = new ActivityLifecycleEventProvider.OnRequestPermissionsResultObserver() {
             @Override
             public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
                 addText("onRequestPermissionsResult", String.format(

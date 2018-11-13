@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.widget.EditText;
 
-import cn.f_ms.android.ui.LifecycleEventProvider;
+import cn.f_ms.android.ui.activity.ActivityLifecycleEventProvider;
 import cn.f_ms.android_library.Action;
 import cn.f_ms.android_library.NestFeatureDialogShowAction;
 import cn.f_ms.library.logic.Callback;
@@ -18,7 +18,7 @@ import cn.f_ms.library.logic.Callback;
  */
 public class ActionGenerater extends NestFeatureDialogShowAction.AbstractActionGenerater {
 
-    public ActionGenerater(cn.f_ms.android.ui.AbstractActivity activity) {
+    public ActionGenerater(cn.f_ms.android.ui.activity.AbstractActivity activity) {
         super(activity);
     }
 
@@ -26,16 +26,16 @@ public class ActionGenerater extends NestFeatureDialogShowAction.AbstractActionG
     public Action[] generate() {
         return new Action[]{
 
-                new Action(cn.f_ms.android.ui.AbstractActivity.class.getSimpleName()) {
+                new Action(cn.f_ms.android.ui.activity.AbstractActivity.class.getSimpleName()) {
                     @Override
                     public void run() {
 
                         final int startActivityRequestCode = 2;
 
-                        final LifecycleEventProvider.OnActivityResultObserver[] onActivityResultObservers = new LifecycleEventProvider.OnActivityResultObserver[1];
+                        final ActivityLifecycleEventProvider.OnActivityResultObserver[] onActivityResultObservers = new ActivityLifecycleEventProvider.OnActivityResultObserver[1];
 
-                        final LifecycleEventProvider.OnActivityResultObserver onActivityResultObserver
-                                = new LifecycleEventProvider.OnActivityResultObserver() {
+                        final ActivityLifecycleEventProvider.OnActivityResultObserver onActivityResultObserver
+                                = new ActivityLifecycleEventProvider.OnActivityResultObserver() {
 
                             @Override
                             public void onActivityResult(int requestCode, int resultCode, Intent data) {

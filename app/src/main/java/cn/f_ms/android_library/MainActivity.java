@@ -6,7 +6,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import cn.f_ms.android.ui.AbstractActivity;
+import cn.f_ms.android.ui.activity.AbstractActivity;
 import cn.f_ms.android_library.activity.ActionGenerater;
 import cn.f_ms.library.collection.util.ElementFilter;
 

@@ -1,4 +1,4 @@
-package cn.f_ms.android.ui;
+package cn.f_ms.android.ui.util;
 
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-class BundleExtraPutUtil {
+public class BundleExtraPutUtil {
 
     private BundleExtraPutUtil() {
         throw new IllegalStateException("no instance");

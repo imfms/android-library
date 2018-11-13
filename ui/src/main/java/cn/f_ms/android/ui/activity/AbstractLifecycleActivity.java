@@ -1,4 +1,4 @@
-package cn.f_ms.android.ui;
+package cn.f_ms.android.ui.activity;
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -15,14 +15,14 @@ import android.view.KeyEvent;
  * @author f_ms
  * @date 18-4-21
  */
-abstract class AbstractLifecycleActivity extends AppCompatActivity implements LifecycleEventProvider.Owner,
-        LifecycleEventProvider.StartActivityForResultInvokeProxy, LifecycleEventProvider.RequestPermissionInvokeProxy {
+abstract class AbstractLifecycleActivity extends AppCompatActivity implements ActivityLifecycleEventProvider.Owner,
+        ActivityLifecycleEventProvider.StartActivityForResultInvokeProxy, ActivityLifecycleEventProvider.RequestPermissionInvokeProxy {
 
-    private LifecycleEventProviderProxy mActivityEventProvider
-            = new LifecycleEventProviderProxy(this, this);
+    private ActivityLifecycleEventProviderProxy mActivityEventProvider
+            = new ActivityLifecycleEventProviderProxy(this, this);
 
     @Override
-    public final LifecycleEventProvider getActivityEventProvider() {
+    public final ActivityLifecycleEventProvider getActivityEventProvider() {
         return mActivityEventProvider;
     }
 

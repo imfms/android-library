@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 
-import cn.f_ms.android.ui.AbstractActivity;
+import cn.f_ms.android.ui.activity.AbstractActivity;
 import cn.f_ms.library.check.CheckNull;
 import cn.f_ms.library.collection.util.ElementFilter;
 

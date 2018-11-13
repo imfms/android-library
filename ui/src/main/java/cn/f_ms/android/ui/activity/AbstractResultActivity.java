@@ -1,8 +1,10 @@
-package cn.f_ms.android.ui;
+package cn.f_ms.android.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+
+import cn.f_ms.android.ui.util.BundleExtraPutUtil;
 
 /**
  * 封装返回结果的基础activity

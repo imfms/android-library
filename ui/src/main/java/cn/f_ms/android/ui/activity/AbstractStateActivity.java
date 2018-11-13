@@ -1,7 +1,10 @@
-package cn.f_ms.android.ui;
+package cn.f_ms.android.ui.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+
+import cn.f_ms.android.ui.util.BundleExtraPutUtil;
+
 
 /**
  * 封装保存自身状态的基础activity

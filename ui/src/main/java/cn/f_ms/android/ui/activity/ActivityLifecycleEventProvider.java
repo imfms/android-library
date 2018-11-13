@@ -1,4 +1,4 @@
-package cn.f_ms.android.ui;
+package cn.f_ms.android.ui.activity;
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -14,18 +14,18 @@ import android.view.KeyEvent;
  * 用于提供给'需要activity各事件'的非activity组件
  * @author imf_m
  */
-public interface LifecycleEventProvider {
+public interface ActivityLifecycleEventProvider {
 
     /**
-     * Provider LifecycleEventProvider
+     * Provider ActivityLifecycleEventProvider
      */
     interface Owner {
 
         /**
-         * get an LifecycleEventProvider
-         * @return LifecycleEventProvider
+         * get an ActivityLifecycleEventProvider
+         * @return ActivityLifecycleEventProvider
          */
-        LifecycleEventProvider getActivityEventProvider();
+        ActivityLifecycleEventProvider getActivityEventProvider();
     }
 
     /**

@@ -1,4 +1,4 @@
-package cn.f_ms.android.ui;
+package cn.f_ms.android.ui.activity;
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -12,12 +12,12 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * LifecycleEventProvider proxy implememnt
+ * ActivityLifecycleEventProvider proxy implememnt
  *
  * @author imf_m
  * @date 2018/4/23
  */
-public class LifecycleEventProviderProxy implements LifecycleEventProvider {
+public class ActivityLifecycleEventProviderProxy implements ActivityLifecycleEventProvider {
 
     /**
      * RequestPermissionInvokeProxy
@@ -43,7 +43,7 @@ public class LifecycleEventProviderProxy implements LifecycleEventProvider {
      * @param requestPermissionProxy      requestPermissionProxy
      * @param startActivityForResultProxy startActivityForResultProxy
      */
-    public LifecycleEventProviderProxy(StartActivityForResultInvokeProxy startActivityForResultProxy, RequestPermissionInvokeProxy requestPermissionProxy) {
+    public ActivityLifecycleEventProviderProxy(StartActivityForResultInvokeProxy startActivityForResultProxy, RequestPermissionInvokeProxy requestPermissionProxy) {
 
         if (startActivityForResultProxy == null) {
             throw new IllegalArgumentException("startActivityForResultProxy can't be null");

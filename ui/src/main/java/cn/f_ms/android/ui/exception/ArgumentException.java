@@ -1,4 +1,4 @@
-package cn.f_ms.android.ui;
+package cn.f_ms.android.ui.exception;
 
 /**
  * ui参数错误信息 包装异常
