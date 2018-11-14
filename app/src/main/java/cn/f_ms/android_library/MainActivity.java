@@ -9,6 +9,7 @@ import android.widget.ListView;
 import cn.f_ms.android.ui.activity.AbstractActivity;
 import cn.f_ms.android_library.activity.ActionGenerater;
 import cn.f_ms.android_library.fragment.DemoAbstractFragmentActivity;
+import cn.f_ms.android_library.viewholder.DemoViewHolderActivity;
 import cn.f_ms.library.collection.util.ElementFilter;
 
 public class MainActivity extends AbstractActivity {
@@ -53,6 +54,21 @@ public class MainActivity extends AbstractActivity {
                                     public void run() {
                                         getActivity().startActivity(
                                                 DemoAbstractFragmentActivity.newIntent(getActivity(), DemoAbstractFragmentActivity.class, null)
+                                        );
+                                    }
+                                }
+                        };
+                    }
+                }),
+                new NestFeatureDialogShowAction(getActivity(), "viewholder", new NestFeatureDialogShowAction.AbstractActionGenerater(this) {
+                    @Override
+                    public Action[] generate() {
+                        return new Action[]{
+                                new Action("DemoLifecycleViewHolder") {
+                                    @Override
+                                    public void run() {
+                                        getActivity().startActivity(
+                                                DemoViewHolderActivity.newIntent(getActivity(), DemoViewHolderActivity.class, null)
                                         );
                                     }
                                 }

@@ -45,5 +45,7 @@ dependencies {
      * logic-library
      * https://github.com/imfms/java-library
      */
-    implementation "com.github.imfms.java-library:logic:0.0.14"
+    String fmsJavaLibrary = "0.0.14"
+    implementation "com.github.imfms.java-library:logic:${fmsJavaLibrary}"
+    implementation "com.github.imfms.java-library:check:${fmsJavaLibrary}"
 }
