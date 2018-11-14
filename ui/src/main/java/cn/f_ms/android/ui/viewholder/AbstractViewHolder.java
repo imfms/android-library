@@ -66,6 +66,15 @@ public abstract class AbstractViewHolder implements ViewHolder {
      */
     protected abstract View initView(LayoutInflater inflater, ViewGroup container);
 
+    /**
+     * 校验是否已初始化
+     */
+    public final void requireInited() {
+        if (!isInit()) {
+            throw new IllegalStateException("please initView first");
+        }
+    }
+
     @Override
     public final View contentView() throws IllegalStateException {
 
