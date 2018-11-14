@@ -1,6 +1,5 @@
 package cn.f_ms.android.ui.viewholder;
 
-import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -22,19 +21,18 @@ public interface ViewHolder {
     /**
      * 生成view, 不可重复调用
      *
-     * @param context   context
      * @param container view container
      * @return 生成后的view
      * @throws IllegalStateException 重复调用
      */
-    View initView(Context context, ViewGroup container);
+    View initView(ViewGroup container);
 
     /**
      * 获取已生成的view
-     * 需先调用{@link #initView(Context, ViewGroup)}
+     * 需先调用{@link #initView(ViewGroup)}
      *
      * @return 已生成的view
-     * @throws IllegalStateException 还未生成view, {@link #initView(Context, ViewGroup)}
+     * @throws IllegalStateException 还未生成view, {@link #initView(ViewGroup)}
      */
     View contentView() throws IllegalStateException;
 

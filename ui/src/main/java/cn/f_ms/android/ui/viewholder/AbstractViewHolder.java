@@ -15,8 +15,12 @@ import cn.f_ms.library.check.CheckNull;
  */
 public abstract class AbstractViewHolder implements ViewHolder {
 
-    private Context context;
+    private final Context context;
     private View contentView;
+
+    public AbstractViewHolder(Context context) {
+        this.context = CheckNull.ifNullThrowArgException(context, "context can't be null");
+    }
 
     protected Context getContext() {
         return context;
@@ -28,8 +32,7 @@ public abstract class AbstractViewHolder implements ViewHolder {
     }
 
     @Override
-    public final View initView(Context context, ViewGroup container) {
-        this.context = CheckNull.ifNullThrowArgException(context, "context can't be null");
+    public final View initView(ViewGroup container) {
 
         if (contentView != null) {
             throw new IllegalStateException("viewholder already inited");

@@ -1,5 +1,7 @@
 package cn.f_ms.android.ui.viewholder;
 
+import android.content.Context;
+
 /**
  * 把控自己生命周期的视图控制器基类
  *
@@ -9,6 +11,10 @@ package cn.f_ms.android.ui.viewholder;
 public abstract class AbstractLifecycleViewHolder extends AbstractViewHolder implements LifecycleViewHolder {
 
     private boolean isAttach = false;
+
+    public AbstractLifecycleViewHolder(Context context) {
+        super(context);
+    }
 
     @Override
     public final boolean isAttach() {

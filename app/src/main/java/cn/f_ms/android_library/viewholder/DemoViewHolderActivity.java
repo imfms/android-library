@@ -13,9 +13,9 @@ public class DemoViewHolderActivity extends AbstractActivity<Void, Void, Void> {
     protected void onCreate(@Nullable Void argument, @Nullable Void savedInstanceState, @Nullable Bundle savedInstanceStateBundle) {
         super.onCreate(argument, savedInstanceState, savedInstanceStateBundle);
 
-        contentViewHolder = new DemoLifecycleViewHolder();
+        contentViewHolder = new DemoLifecycleViewHolder(this);
 
-        setContentView(contentViewHolder.initView(this, null));
+        setContentView(contentViewHolder.initView(null));
     }
 
     @Override

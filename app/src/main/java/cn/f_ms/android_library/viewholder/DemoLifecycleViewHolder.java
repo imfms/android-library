@@ -1,5 +1,6 @@
 package cn.f_ms.android_library.viewholder;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,10 @@ public class DemoLifecycleViewHolder extends AbstractLifecycleViewHolder {
 
     private TextView tvAttach;
     private TextView tvInit;
+
+    public DemoLifecycleViewHolder(Context context) {
+        super(context);
+    }
 
     @Override
     protected View initView(LayoutInflater inflater, ViewGroup container) {

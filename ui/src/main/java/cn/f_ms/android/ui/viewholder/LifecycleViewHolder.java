@@ -1,6 +1,5 @@
 package cn.f_ms.android.ui.viewholder;
 
-import android.content.Context;
 import android.view.ViewGroup;
 
 /**
@@ -20,9 +19,9 @@ public interface LifecycleViewHolder extends ViewHolder {
 
     /**
      * 当视图被依附/使用
-     * 此方法在 {@link #initView(Context, ViewGroup)} 后被调用
+     * 此方法在 {@link #initView(ViewGroup)} 后被调用
      *
-     * @throws IllegalStateException 在{@link #initView(Context, ViewGroup)}被前调用
+     * @throws IllegalStateException 在{@link #initView(ViewGroup)}被前调用
      */
     void onAttach();
 
