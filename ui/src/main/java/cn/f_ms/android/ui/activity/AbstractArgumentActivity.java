@@ -127,7 +127,6 @@ abstract class AbstractArgumentActivity<Arg> extends AbstractLifecycleActivity {
             if (!isArgumentTypeRight) {
                 throw new IllegalStateException("please call super.checkArgument(Arg) in '" + this.getClass().getName() + "' first");
             }
-            onCreate(mArgument, savedInstanceState);
         } catch (ClassCastException e) {
             if (!isArgumentTypeRight) {
                 onArgumentExistError(new ArgumentException.ArgumentTypeErrorException("argument type cast error on '" + this.getClass().getName() + "': " + e.getMessage(), e));
@@ -135,6 +134,8 @@ abstract class AbstractArgumentActivity<Arg> extends AbstractLifecycleActivity {
         } catch (Exception e) {
             onArgumentExistError(e);
         }
+
+        onCreate(mArgument, savedInstanceState);
     }
 
     /**

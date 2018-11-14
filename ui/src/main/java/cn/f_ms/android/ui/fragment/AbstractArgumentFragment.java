@@ -103,7 +103,6 @@ abstract class AbstractArgumentFragment<Arg> extends AbstractLifecycleFragment {
             if (!isArgumentTypeRight) {
                 throw new IllegalStateException("please call super.checkArgument(Arg) in '" + this.getClass().getName() + "' first");
             }
-            return onCreateView(mArgument, savedInstanceState, container);
         } catch (ClassCastException e) {
             if (!isArgumentTypeRight) {
                 return onArgumentExistError(new ArgumentException.ArgumentTypeErrorException("argument type cast error on '" + this.getClass().getName() + "': " + e.getMessage(), e), container);
@@ -112,6 +111,8 @@ abstract class AbstractArgumentFragment<Arg> extends AbstractLifecycleFragment {
         } catch (Exception e) {
             return onArgumentExistError(e, container);
         }
+
+        return onCreateView(mArgument, savedInstanceState, container);
     }
 
     /**
