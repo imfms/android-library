@@ -31,6 +31,17 @@ public abstract class AbstractViewHolder implements ViewHolder {
         return contentView != null;
     }
 
+    /**
+     * 获取视图, 如果暂未初始化则初始化view, 已初始化则返回当前view
+     * @param container view container
+     * @return 视图
+     */
+    public final View obtainView(ViewGroup container) {
+        return isInit()
+                ? contentView()
+                : initView(container);
+    }
+
     @Override
     public final View initView(ViewGroup container) {
 
