@@ -15,7 +15,20 @@ import cn.f_ms.library.check.CheckNull;
  */
 public abstract class AbstractViewHolder implements ViewHolder {
 
+    /**
+     * viewholder初始化监听器
+     */
+    public interface OnViewHolderInitedListener {
+        /**
+         * 当viewholder初始化后
+         * @param viewHolder viewHolder
+         */
+        void onViewHolderInited(ViewHolder viewHolder);
+    }
+
     private final Context context;
+
+    private OnViewHolderInitedListener onViewHolderInitedListener;
     private View contentView;
 
     public AbstractViewHolder(Context context) {
@@ -42,6 +55,14 @@ public abstract class AbstractViewHolder implements ViewHolder {
                 : initView(container);
     }
 
+    /**
+     * 设置viewholder初始化状态监听器
+     * @param onViewHolderInitedListener 初始化状态监听器
+     */
+    public void setOnViewHolderInitedListener(OnViewHolderInitedListener onViewHolderInitedListener) {
+        this.onViewHolderInitedListener = onViewHolderInitedListener;
+    }
+
     @Override
     public final View initView(ViewGroup container) {
 
@@ -53,6 +74,10 @@ public abstract class AbstractViewHolder implements ViewHolder {
         CheckNull.ifNullThrowArgException(contentView, "contentView can't be null");
 
         this.contentView = contentView;
+
+        if (onViewHolderInitedListener != null) {
+            onViewHolderInitedListener.onViewHolderInited(this);
+        }
 
         return contentView;
     }
