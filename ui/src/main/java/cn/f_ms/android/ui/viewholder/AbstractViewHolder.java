@@ -61,6 +61,11 @@ public abstract class AbstractViewHolder implements ViewHolder {
      */
     public void setOnViewHolderInitedListener(OnViewHolderInitedListener onViewHolderInitedListener) {
         this.onViewHolderInitedListener = onViewHolderInitedListener;
+        if (isInit()) {
+            if (onViewHolderInitedListener != null) {
+                onViewHolderInitedListener.onViewHolderInited(this);
+            }
+        }
     }
 
     @Override
