@@ -1,6 +1,7 @@
 package cn.f_ms.android.ui.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -48,14 +49,14 @@ abstract class AbstractArgumentActivity<Arg> extends AbstractLifecycleActivity {
     /**
      * 创建新intent
      *
-     * @param activity      activity
+     * @param context      context
      * @param activityClass activityClass
      * @param arg           activity's arg
      * @param <Arg>         activity's arg type
      * @return activity's intent
      */
-    protected static <Arg> Intent newIntent(Activity activity, Class<? extends Activity> activityClass, Arg arg) {
-        return new Intent(activity, activityClass)
+    protected static <Arg> Intent newIntent(Context context, Class<? extends Activity> activityClass, Arg arg) {
+        return new Intent(context, activityClass)
                 .putExtras(getArgumentBundle(arg));
     }
 
